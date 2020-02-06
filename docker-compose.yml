@@ -1,0 +1,24 @@
+version: '3'
+services:
+  nginx-api:
+    image: nginx:latest
+    container_name: nginx-api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/home/test-docker-api
+      - ./docker/nginx:/etc/nginx/conf.d
+    networks:
+      - test-network
+  test-docker-api:
+    build: .
+    container_name: test-docker-api
+    working_dir: /home/test-docker-api
+    volumes:
+      - ./:/home/test-docker-api
+    depends_on:
+      - nginx-api
+    networks:
+      - test-network
+networks:
+  test-network:
